@@ -22,6 +22,8 @@ npm install nice-react-hook-device-detector
 
 ## Quick Start
 
+### Using the Hook Directly
+
 ```tsx
 import { useDeviceDetector } from 'nice-react-hook-device-detector';
 
@@ -40,6 +42,34 @@ function MyComponent() {
 }
 ```
 
+### Using Context Provider (Optional)
+
+For applications that need to share device detection state across multiple components, you can use the Context Provider pattern:
+
+```tsx
+import { DeviceProvider, useDevice } from 'nice-react-hook-device-detector';
+
+// Wrap your app with the provider
+function App() {
+  return (
+    <DeviceProvider>
+      <YourAppComponents />
+    </DeviceProvider>
+  );
+}
+
+// Use the hook in any child component
+function ChildComponent() {
+  const { isMobile } = useDevice();
+
+  return (
+    <div>
+      {isMobile ? 'Mobile View' : 'Desktop View'}
+    </div>
+  );
+}
+```
+
 ## API Reference
 
 ### `useDeviceDetector()`
@@ -52,6 +82,35 @@ A React hook that returns a boolean indicating whether the current device is det
 **Example:**
 ```tsx
 const isMobile = useDeviceDetector();
+```
+
+### `DeviceProvider`
+
+A React Context Provider that shares device detection state across components.
+
+**Props:**
+- `children: React.ReactNode` - Child components that will have access to the device context
+
+**Example:**
+```tsx
+<DeviceProvider>
+  <App />
+</DeviceProvider>
+```
+
+### `useDevice()`
+
+A React hook that accesses the device context. Must be used within a `DeviceProvider`.
+
+**Returns:**
+- `{ isMobile: boolean }` - Object containing the mobile detection state
+
+**Throws:**
+- Error if used outside of `DeviceProvider`
+
+**Example:**
+```tsx
+const { isMobile } = useDevice();
 ```
 
 ## Detection Logic
