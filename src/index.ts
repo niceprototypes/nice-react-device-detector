@@ -1,0 +1,1 @@
+export { useDeviceDetector, default } from "./useDeviceDetector"
