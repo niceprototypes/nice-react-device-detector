@@ -209,6 +209,36 @@ function App() {
 }
 ```
 
+## Storybook Documentation
+
+This hook is fully documented in our interactive Storybook with live examples and use cases.
+
+**View the documentation:** [Nice Prototypes Storybook - useDeviceDetector](http://localhost:6006/?path=/docs/hooks-usedevicedetector--docs)
+
+The Storybook includes:
+- 📚 **Interactive Examples**: Test the hook with live device detection
+- 🎮 **Debug Mode Demo**: Learn how to use localStorage and URL parameters for testing
+- 🔄 **Context vs Hook Comparison**: Understand when to use each approach
+- 📱 **Responsive Testing**: See detection in action with different viewport sizes
+- 💡 **Real-World Patterns**: Common use cases and implementation examples
+- 🎯 **Best Practices**: Performance tips and architectural guidance
+
+### Running the Storybook Locally
+
+```bash
+# Clone the storybook repository
+git clone https://github.com/niceprototypes/nice-storybook.git
+cd nice-storybook
+
+# Install dependencies
+npm install
+
+# Start Storybook
+npm run storybook
+```
+
+Visit `http://localhost:6006` and navigate to **Hooks → useDeviceDetector** in the sidebar.
+
 ## Browser Support
 
 - ✅ Chrome/Chromium
