@@ -16,7 +16,7 @@
  *
  * @example
  * // Hook approach - Simple usage
- * import { useDeviceDetector } from 'nice-react-hook-device-detector'
+ * import { useDeviceDetector } from 'nice-react-device-detector'
  *
  * function MyComponent() {
  *   const isMobile = useDeviceDetector()
@@ -25,7 +25,7 @@
  *
  * @example
  * // Context approach - Better for multiple components
- * import { DeviceProvider, useDevice } from 'nice-react-hook-device-detector'
+ * import { DeviceProvider, useDevice } from 'nice-react-device-detector'
  *
  * function App() {
  *   return (
@@ -41,7 +41,7 @@
  *   return <header>{isMobile ? 'Mobile Header' : 'Desktop Header'}</header>
  * }
  *
- * @module nice-react-hook-device-detector
+ * @module nice-react-device-detector
  * @version 1.2.0
  * @license MIT
  */
@@ -55,7 +55,7 @@
  *
  * @see {@link useDeviceDetector} For detailed documentation and usage examples
  */
-export { useDeviceDetector, default } from "./useDeviceDetector"
+export { useDeviceDetector, default } from "./hooks/useDeviceDetector"
 
 /**
  * Re-export of the Context API components for shared device detection state.
@@ -69,4 +69,4 @@ export { useDeviceDetector, default } from "./useDeviceDetector"
  * @see {@link DeviceProvider} For provider component documentation
  * @see {@link useDevice} For consumer hook documentation
  */
-export { DeviceProvider, useDevice } from "./DeviceContext"
+export { DeviceProvider, useDevice } from "./components/DeviceProvider"

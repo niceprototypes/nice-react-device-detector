@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react'
-import { useDeviceDetector } from './useDeviceDetector'
+import { useDeviceDetector } from '../../hooks/useDeviceDetector'
 
 /**
  * Type definition for the Device Context value.

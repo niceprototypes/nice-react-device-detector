@@ -1,6 +1,6 @@
-# nice-react-hook-device-detector
+# nice-react-device-detector
 
-[![npm version](https://badge.fury.io/js/nice-react-hook-device-detector.svg)](https://badge.fury.io/js/nice-react-hook-device-detector)
+[![npm version](https://badge.fury.io/js/nice-react-device-detector.svg)](https://badge.fury.io/js/nice-react-device-detector)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A React hook for detecting mobile devices with enhanced debugging capabilities and Chrome DevTools support.
@@ -17,7 +17,7 @@ A React hook for detecting mobile devices with enhanced debugging capabilities a
 ## Installation
 
 ```bash
-npm install nice-react-hook-device-detector
+npm install nice-react-device-detector
 ```
 
 ## Quick Start
@@ -25,7 +25,7 @@ npm install nice-react-hook-device-detector
 ### Using the Hook Directly
 
 ```tsx
-import { useDeviceDetector } from 'nice-react-hook-device-detector';
+import { useDeviceDetector } from 'nice-react-device-detector';
 
 function MyComponent() {
   const isMobile = useDeviceDetector();
@@ -47,7 +47,7 @@ function MyComponent() {
 For applications that need to share device detection state across multiple components, you can use the Context Provider pattern:
 
 ```tsx
-import { DeviceProvider, useDevice } from 'nice-react-hook-device-detector';
+import { DeviceProvider, useDevice } from 'nice-react-device-detector';
 
 // Wrap your app with the provider
 function App() {
@@ -154,7 +154,7 @@ localStorage.removeItem('debug-mobile');
 
 ### Conditional Rendering
 ```tsx
-import { useDeviceDetector } from 'nice-react-hook-device-detector';
+import { useDeviceDetector } from 'nice-react-device-detector';
 
 function Navigation() {
   const isMobile = useDeviceDetector();
@@ -173,7 +173,7 @@ function Navigation() {
 
 ### Conditional Styling
 ```tsx
-import { useDeviceDetector } from 'nice-react-hook-device-detector';
+import { useDeviceDetector } from 'nice-react-device-detector';
 import styled from 'styled-components';
 
 const Container = styled.div<{ isMobile: boolean }>`
@@ -194,7 +194,7 @@ function MyComponent() {
 
 ### Feature Toggling
 ```tsx
-import { useDeviceDetector } from 'nice-react-hook-device-detector';
+import { useDeviceDetector } from 'nice-react-device-detector';
 
 function App() {
   const isMobile = useDeviceDetector();
