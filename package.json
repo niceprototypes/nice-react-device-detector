@@ -13,7 +13,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "test": "jest",
-    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint": "eslint src --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build",
     "prepare": "npm run build"
