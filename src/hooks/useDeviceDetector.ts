@@ -2,12 +2,14 @@ import { useEffect, useState } from "react"
 
 /**
  * Breakpoint threshold (in pixels) for determining small screen devices.
- * Screens with width <= 480px are considered mobile-sized.
+ * Screens with width <= 640px are considered mobile-sized. Aligned with
+ * the `small` breakpoint in nice-styles so `isMobile` and
+ * `breakpoint === "small"` map 1:1.
  *
  * @constant {number}
- * @default 480
+ * @default 640
  */
-const BREAKPOINT_SM = 480
+const BREAKPOINT_SM = 640
 
 /**
  * Performs comprehensive mobile device detection using multiple heuristics.
@@ -85,7 +87,7 @@ const checkMobile = (setIsMobile: (isMobile: boolean) => void) => {
  * **Detection Methods:**
  * - User agent string parsing (identifies iOS, Android, and other mobile platforms)
  * - Touch event support detection
- * - Viewport width analysis (threshold: 480px)
+ * - Viewport width analysis (threshold: 640px, aligned with nice-styles "small")
  * - Chrome DevTools mobile emulation support
  * - Debug mode via localStorage or URL parameters
  *
