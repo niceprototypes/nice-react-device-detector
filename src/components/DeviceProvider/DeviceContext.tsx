@@ -93,9 +93,22 @@ const DeviceContext = createContext<DeviceContextType | undefined>(undefined)
  * @see {@link useDevice} Hook for accessing device state from child components
  * @see {@link useDeviceDetector} Alternative hook-based approach without context
  */
-export const DeviceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+/**
+ * Props for the DeviceProvider component.
+ *
+ * @property {React.ReactNode} children - Subtree that should receive device state.
+ * @property {string[]} [userAgents] - Optional override for the substrings matched
+ *   against `navigator.userAgent`. Defaults to `DEFAULT_MOBILE_USER_AGENTS`
+ *   exported from `useDeviceDetector`.
+ */
+export interface DeviceProviderProps {
+  children: React.ReactNode
+  userAgents?: readonly string[]
+}
+
+export const DeviceProvider: React.FC<DeviceProviderProps> = ({ children, userAgents }) => {
   // Perform device detection once at the provider level
-  const isMobile = useDeviceDetector()
+  const isMobile = useDeviceDetector({ userAgents })
 
   return (
     <DeviceContext.Provider value={{ isMobile }}>

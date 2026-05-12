@@ -55,7 +55,8 @@
  *
  * @see {@link useDeviceDetector} For detailed documentation and usage examples
  */
-export { useDeviceDetector, default } from "./hooks/useDeviceDetector"
+export { useDeviceDetector, default, DEFAULT_MOBILE_USER_AGENTS } from "./hooks/useDeviceDetector"
+export type { UseDeviceDetectorOptions } from "./hooks/useDeviceDetector"
 
 /**
  * Re-export of the Context API components for shared device detection state.
@@ -70,3 +71,6 @@ export { useDeviceDetector, default } from "./hooks/useDeviceDetector"
  * @see {@link useDevice} For consumer hook documentation
  */
 export { DeviceProvider, useDevice } from "./components/DeviceProvider"
+export type { DeviceProviderProps } from "./components/DeviceProvider"
+
+export { checkMobile } from "./services"

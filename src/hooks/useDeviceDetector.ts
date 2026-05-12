@@ -1,80 +1,37 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import { checkMobile } from "../services/checkMobile"
 
 /**
- * Breakpoint threshold (in pixels) for determining small screen devices.
- * Screens with width <= 640px are considered mobile-sized. Aligned with
- * the `small` breakpoint in nice-styles so `isMobile` and
- * `breakpoint === "small"` map 1:1.
+ * Default list of substrings matched against `navigator.userAgent` to flag
+ * a request as coming from a mobile device. Joined with `|` into a
+ * case-insensitive RegExp. Override via `useDeviceDetector({ userAgents })`
+ * or the `userAgents` prop on `DeviceProvider`.
  *
- * @constant {number}
- * @default 640
+ * Entries are treated as regex source fragments — they are joined as-is, not
+ * escaped, so consumers can pass plain substrings (the common case) or
+ * regex fragments if needed.
  */
-const BREAKPOINT_SM = 640
+export const DEFAULT_MOBILE_USER_AGENTS: readonly string[] = [
+  "Android",
+  "BlackBerry",
+  "iPhone",
+  "iPad",
+  "iPod",
+  "Opera Mini",
+  "IEMobile",
+  "WPDesktop",
+  "Mobile",
+  "mobile",
+]
 
 /**
- * Performs comprehensive mobile device detection using multiple heuristics.
+ * Options accepted by `useDeviceDetector`.
  *
- * This function employs a multi-layered detection strategy:
- * 1. **Debug Mode**: Checks localStorage and URL parameters for forced mobile mode
- * 2. **User Agent Detection**: Analyzes the browser's user agent string
- * 3. **Touch Capability**: Detects if the device supports touch events
- * 4. **Screen Size**: Evaluates viewport width against the mobile breakpoint
- * 5. **DevTools Emulation**: Identifies Chrome DevTools mobile emulation mode
- *
- * The detection prioritizes debug flags for development/testing purposes, then
- * falls back to production detection methods that combine user agent analysis
- * with physical device characteristics.
- *
- * @param {(isMobile: boolean) => void} setIsMobile - State setter function to update mobile status
- *
- * @example
- * // Used internally by useDeviceDetector
- * const [isMobile, setIsMobile] = useState(false)
- * checkMobile(setIsMobile) // Updates isMobile state based on detection
- *
- * @remarks
- * Debug mode can be activated by:
- * - Setting localStorage item "debug-mobile" to "true"
- * - Adding "?mobile=true" to the URL query string
+ * @property {string[]} [userAgents] - Substrings matched against `navigator.userAgent`
+ *   to flag the request as mobile. Defaults to `DEFAULT_MOBILE_USER_AGENTS`.
  */
-const checkMobile = (setIsMobile: (isMobile: boolean) => void) => {
-  const userAgent = typeof window.navigator === "undefined" ? "" : navigator.userAgent
-
-  // Debug flag - check localStorage and URL parameters
-  // This allows developers to test mobile-specific features without actual mobile devices
-  const debugMobile =
-    localStorage.getItem("debug-mobile") === "true" ||
-    new URLSearchParams(window.location.search).get("mobile") === "true"
-
-  if (debugMobile) {
-    setIsMobile(true)
-    return
-  }
-
-  // Enhanced mobile detection including Chrome DevTools mobile emulation
-  // Matches common mobile device identifiers in the user agent string
-  const mobileUserAgent = Boolean(
-    userAgent.match(
-      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop|Mobile|mobile/i
-    )
-  )
-
-  // Check for touch capability
-  // Modern mobile devices support touch events, while most desktop browsers don't
-  const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0
-
-  // Check viewport width using BREAKPOINT_SM from variables
-  // Small screen width is a strong indicator of mobile devices
-  const smallScreen = window.innerWidth <= BREAKPOINT_SM
-
-  // Check if using Chrome DevTools device emulation
-  // Combines touch capability with small screen to catch emulated mobile environments
-  const isDevToolsMobile = hasTouch && smallScreen
-
-  // Device is considered mobile if EITHER:
-  // - User agent indicates a mobile device, OR
-  // - Device exhibits mobile characteristics (touch + small screen)
-  setIsMobile(mobileUserAgent || isDevToolsMobile)
+export interface UseDeviceDetectorOptions {
+  userAgents?: readonly string[]
 }
 
 /**
@@ -137,13 +94,24 @@ const checkMobile = (setIsMobile: (isMobile: boolean) => void) => {
  * @see {@link DeviceProvider} For context-based alternative that prevents multiple detections
  * @see {@link useDevice} For accessing device state from DeviceProvider context
  */
-export const useDeviceDetector = () => {
+export const useDeviceDetector = (options: UseDeviceDetectorOptions = {}) => {
+  const { userAgents = DEFAULT_MOBILE_USER_AGENTS } = options
   const [isMobile, setIsMobile] = useState(false)
+
+  // Keying on the joined string (not the array reference) keeps the RegExp
+  // stable when consumers pass inline literals — otherwise the resize listener
+  // would tear down on every render. Joining inside the handler would also
+  // rebuild on every viewport event.
+  const userAgentPattern = userAgents.join("|")
+  const userAgentRegex = useMemo(
+    () => new RegExp(userAgentPattern, "i"),
+    [userAgentPattern]
+  )
 
   useEffect(() => {
     // Initial check on component mount
     // This ensures the correct device type is detected immediately
-    checkMobile(setIsMobile)
+    checkMobile(setIsMobile, userAgentRegex)
 
     // Create a resize handler that calls checkMobile with the setter
     // This allows dynamic detection when:
@@ -151,7 +119,7 @@ export const useDeviceDetector = () => {
     // - Browser window is resized
     // - DevTools device emulation is toggled
     const handleResize = () => {
-      checkMobile(setIsMobile)
+      checkMobile(setIsMobile, userAgentRegex)
     }
 
     // Listen for window resize events to update detection in real-time
@@ -162,7 +130,7 @@ export const useDeviceDetector = () => {
     return () => {
       window.removeEventListener("resize", handleResize)
     }
-  }, [])
+  }, [userAgentRegex])
 
   return isMobile
 }
