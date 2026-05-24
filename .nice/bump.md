@@ -1,0 +1,1 @@
+[2026-05-23 21:05] patch: Remove broken `test: jest` and `lint: eslint` scripts from package.json — neither tool had a config file (no jest.config.js, no .eslintrc). Priority 1.5 normalization: scripts must be runnable, not placeholders.
