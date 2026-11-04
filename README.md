@@ -1,3 +1,12 @@
+**This repository is no longer maintained.** Development continues in the Nice UI monorepo.
+
+- New location: https://github.com/niceprototypes/nice-ux
+- New npm package: none (no direct counterpart)
+
+---
+
+# Legacy documentation
+
 # nice-react-device-detector
 
 [![npm version](https://badge.fury.io/js/nice-react-device-detector.svg)](https://badge.fury.io/js/nice-react-device-detector)
